@@ -1,104 +1,71 @@
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class LibraryApp {
 
-    private List<Book> books = new ArrayList<>();
-    private Scanner scanner = new Scanner(System.in);
-
-    public static void main(String[] args) {
-        new LibraryApp().run();
-    }
+    private ArrayList<Book> books = new ArrayList<>();
+    private Scanner sc = new Scanner(System.in);
 
     public void run() {
-        boolean running = true;
+        while (true) {
+            System.out.println("""
+                    1. Print books
+                    2. Add book
+                    3. Borrow book
+                    4. Return book
+                    5. Delete book
+                    6. Quit
+                    """);
 
-        while (running) {
-            System.out.println("\nWelcome to Library App!");
-            System.out.println("1. Print all books");
-            System.out.println("2. Add new book");
-            System.out.println("3. Search books by title");
-            System.out.println("4. Borrow a book");
-            System.out.println("5. Return a book");
-            System.out.println("6. Delete a book by id");
-            System.out.println("7. Quit");
-            System.out.print("Choose option: ");
-
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // clear buffer
+            int choice = sc.nextInt();
+            sc.nextLine();
 
             switch (choice) {
-                case 1 -> printAllBooks();
-                case 2 -> addNewBook();
-                case 3 -> searchByTitle();
-                case 4 -> borrowBook();
-                case 5 -> returnBook();
-                case 6 -> deleteBook();
-                case 7 -> running = false;
-                default -> System.out.println("Invalid option");
+                case 1 -> printBooks();
+                case 2 -> addBook();
+                case 3 -> borrowBook();
+                case 4 -> returnBook();
+                case 5 -> deleteBook();
+                case 6 -> {
+                    System.out.println("Bye!");
+                    return;
+                }
             }
         }
     }
 
-    private void printAllBooks() {
+    private void printBooks() {
         if (books.isEmpty()) {
-            System.out.println("No books in the library");
+            System.out.println("No books in library");
             return;
         }
-        for (Book book : books) {
-            System.out.println(book);
+        for (Book b : books) {
+            System.out.println(b);
         }
     }
 
-    private void addNewBook() {
-        try {
-            System.out.print("Title: ");
-            String title = scanner.nextLine();
-            System.out.print("Author: ");
-            String author = scanner.nextLine();
-            System.out.print("Year: ");
-            int year = scanner.nextInt();
-            scanner.nextLine();
+    private void addBook() {
+        System.out.print("Title: ");
+        String title = sc.nextLine();
+        System.out.print("Author: ");
+        String author = sc.nextLine();
+        System.out.print("Year: ");
+        int year = sc.nextInt();
 
-            Book book = new Book(title, author, year);
-            books.add(book);
-            System.out.println("Book added successfully");
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-            scanner.nextLine();
-        }
-    }
-
-    private void searchByTitle() {
-        System.out.print("Enter part of title: ");
-        String query = scanner.nextLine().toLowerCase();
-
-        boolean found = false;
-        for (Book book : books) {
-            if (book.getTitle().toLowerCase().contains(query)) {
-                System.out.println(book);
-                found = true;
-            }
-        }
-
-        if (!found) {
-            System.out.println("No books found");
-        }
+        books.add(new Book(title, author, year));
     }
 
     private void borrowBook() {
-        System.out.print("Enter book id: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+        System.out.print("Book id: ");
+        int id = sc.nextInt();
 
-        for (Book book : books) {
-            if (book.getId() == id) {
-                if (book.isAvailable()) {
-                    book.markAsBorrowed();
+        for (Book b : books) {
+            if (b.getId() == id) {
+                if (b.isAvailable()) {
+                    b.markAsBorrowed();
                     System.out.println("Book borrowed");
                 } else {
-                    System.out.println("Book is already borrowed");
+                    System.out.println("Already borrowed");
                 }
                 return;
             }
@@ -107,18 +74,13 @@ public class LibraryApp {
     }
 
     private void returnBook() {
-        System.out.print("Enter book id: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+        System.out.print("Book id: ");
+        int id = sc.nextInt();
 
-        for (Book book : books) {
-            if (book.getId() == id) {
-                if (!book.isAvailable()) {
-                    book.markAsReturned();
-                    System.out.println("Book returned");
-                } else {
-                    System.out.println("Book was not borrowed");
-                }
+        for (Book b : books) {
+            if (b.getId() == id) {
+                b.markAsReturned();
+                System.out.println("Book returned");
                 return;
             }
         }
@@ -126,17 +88,13 @@ public class LibraryApp {
     }
 
     private void deleteBook() {
-        System.out.print("Enter book id: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+        System.out.print("Book id: ");
+        int id = sc.nextInt();
 
-        for (Book book : books) {
-            if (book.getId() == id) {
-                books.remove(book);
-                System.out.println("Book deleted");
-                return;
-            }
-        }
-        System.out.println("Book not found");
+        books.removeIf(b -> b.getId() == id);
+    }
+
+    public static void main(String[] args) {
+        new LibraryApp().run();
     }
 }
