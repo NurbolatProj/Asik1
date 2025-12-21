@@ -5,14 +5,12 @@ public class Rectangle {
     private int id;
     private static int idGen = 1;
 
-    // Default constructor
     public Rectangle() {
         this.width = 1.0;
         this.height = 1.0;
         this.id = idGen++;
     }
 
-    // Constructor with parameters
     public Rectangle(double width, double height) {
         this();
         setWidth(width);
@@ -24,9 +22,7 @@ public class Rectangle {
     }
 
     public void setWidth(double width) {
-        if (width <= 0) {
-            throw new IllegalArgumentException("Width must be greater than 0");
-        }
+        if (width <= 0) throw new IllegalArgumentException("Width must be > 0");
         this.width = width;
     }
 
@@ -35,14 +31,8 @@ public class Rectangle {
     }
 
     public void setHeight(double height) {
-        if (height <= 0) {
-            throw new IllegalArgumentException("Height must be greater than 0");
-        }
+        if (height <= 0) throw new IllegalArgumentException("Height must be > 0");
         this.height = height;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public double area() {
@@ -55,8 +45,6 @@ public class Rectangle {
 
     @Override
     public String toString() {
-        return "Rectangle{id=" + id +
-                ", width=" + width +
-                ", height=" + height + "}";
+        return "Rectangle{id=" + id + ", width=" + width + ", height=" + height + "}";
     }
 }
