@@ -1,5 +1,3 @@
-import java.time.Year;
-
 public class Book {
 
     private int id;
@@ -9,13 +7,11 @@ public class Book {
     private int year;
     private boolean available;
 
-    // Default constructor
     public Book() {
         this.id = idGen++;
         this.available = true;
     }
 
-    // Constructor with parameters
     public Book(String title, String author, int year) {
         this();
         setTitle(title);
@@ -32,9 +28,8 @@ public class Book {
     }
 
     public void setTitle(String title) {
-        if (title == null || title.trim().isEmpty()) {
-            throw new IllegalArgumentException("Title cannot be null or empty");
-        }
+        if (title == null || title.isEmpty())
+            throw new IllegalArgumentException("Title is empty");
         this.title = title;
     }
 
@@ -43,9 +38,8 @@ public class Book {
     }
 
     public void setAuthor(String author) {
-        if (author == null || author.trim().isEmpty()) {
-            throw new IllegalArgumentException("Author cannot be null or empty");
-        }
+        if (author == null || author.isEmpty())
+            throw new IllegalArgumentException("Author is empty");
         this.author = author;
     }
 
@@ -54,10 +48,8 @@ public class Book {
     }
 
     public void setYear(int year) {
-        int currentYear = Year.now().getValue();
-        if (year < 1500 || year > currentYear) {
-            throw new IllegalArgumentException("Invalid year");
-        }
+        if (year < 1500 || year > 2025)
+            throw new IllegalArgumentException("Wrong year");
         this.year = year;
     }
 
@@ -75,10 +67,7 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{id=" + id +
-                ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", year=" + year +
-                ", available=" + available + "}";
+        return id + ": " + title + " by " + author +
+                " (" + year + "), available=" + available;
     }
 }
